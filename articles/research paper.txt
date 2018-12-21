@@ -51,13 +51,13 @@ text segments that contain the main information in
 the original input. We use the seq2seq model in
 modeling the generator and reconstructor because
 both have input and output sequences with different lengths.
-However, it is very possible that the generator’s output word sequence can only be processed and recognized by the reconstructor but is
+However, it is very possible that the generatorâ€™s output word sequence can only be processed and recognized by the reconstructor but is
 arXiv:1810.02851v1 [cs.CL] 5 Oct 2018
 not readable by humans. Here, instead of regularizing the generator output with a pre-trained
 language model (Miao and Blunsom, 2016), we
 borrow from adversarial auto-encoders (Makhzani
 et al., 2015) and cycle GAN (Zhu et al., 2017)
-and introduce a third component – the discriminator – to regularize the generator’s output word sequence. The discriminator and the generator form
+and introduce a third component â€“ the discriminator â€“ to regularize the generatorâ€™s output word sequence. The discriminator and the generator form
 a generative adversarial network (GAN) (Goodfellow et al., 2014). The discriminator discriminates between the generator output and humanwritten sentences, and the generator produces output as similar as possible to human-written sentences to confuse the discriminator. With the GAN
 framework, the discriminator teaches the generator how to create human-like summary sentences
 as a latent representation. However, due to the
@@ -111,7 +111,7 @@ In (Gulrajani et al., 2017), instead of feeding a
 discrete word sequence, the authors directly feed
 the generator output layer to the discriminator.
 This method works because they use the earth
-mover’s distance on GAN as proposed in (Arjovsky et al., 2017), which is able to evaluate the
+moverâ€™s distance on GAN as proposed in (Arjovsky et al., 2017), which is able to evaluate the
 distance between a discrete and a continuous distribution. SeqGAN (Yu et al., 2017) tackles the
 sequence generation problem with reinforcement
 learning. Here, we refer to this approach as adversarial REINFORCE. However, the discriminator only measures the quality of whole sequence,
@@ -154,13 +154,13 @@ beam search with beam size=5, and we eliminated
 repetition. We provide the details of the implementation and corpus re-processing respectively
 in Appendix A and B.
 Before jointly training the whole model, we
-pre-trained the three major components – generator, discriminator, and reconstructor – separately.
+pre-trained the three major components â€“ generator, discriminator, and reconstructor â€“ separately.
 First, we pre-trained the generator in an unsupervised manner so that the generator would be able
 to somewhat grasp the semantic meaning of the
 source text. The details of the pre-training are
 in Appendix C. We pre-trained the discriminator
 and reconstructor respectively with the pre-trained
-generator’s output to ensure that these two critic
+generatorâ€™s output to ensure that these two critic
 networks provide good feedback to the generator.
 The English Gigaword is a sentence summarization dataset which contains the first sentence of
 each article and its corresponding headlines. The
@@ -217,7 +217,7 @@ Figure 4: Real examples with methods referred in
 Table 1. The proposed methods generated summaries that grasped the core idea of the articles.
 6.3 CNN/Daily Mail dataset
 The CNN/Daily Mail dataset is a long text summarization dataset which is composed of news articles paired with summaries. We evaluated our
-model on this dataset because it’s a popular benchmark dataset, and we want to know whether the
+model on this dataset because itâ€™s a popular benchmark dataset, and we want to know whether the
 proposed model works on long input and long
 output sequences. The details of corpus preprocessing can be found in Appendix.B . In unpaired training, to prevent the model from directly
 matching the input articles to its corresponding
@@ -226,7 +226,7 @@ equal sets, one set only supplied articles and the
 other set only supplied summaries.
 The results are shown in Table 2. For supervised approaches in part (A), although our seq2seq
 model was similar to (See et al., 2017), due to
-the smaller vocabulary size (we didn’t tackle outof-vocabulary words), simpler model architecture,
+the smaller vocabulary size (we didnâ€™t tackle outof-vocabulary words), simpler model architecture,
 shorter output length of generated summaries,
 there was a performance gap between our model
 and the scores reported in (See et al., 2017). Compared to the lead-3 baseline in part (B) which took
@@ -236,13 +236,13 @@ information in the first few sentences, and thus
 even the best abstractive summarization model
 only slightly beat the lead-3 baseline on ROUGE
 scores. However, during pre-training or training
-we didn’t make assumption that the most important sentences are in first few sentences.
+we didnâ€™t make assumption that the most important sentences are in first few sentences.
 We observed that our unpaired model yielded
 decent ROUGE-1 score, but it yielded lower
 ROUGE-2 and ROUGE-L score. That was probably because the length of our generated sequence
 was shorter than ground truth, and our vocabulary size was small. Another reason was that the
 generator was good at selecting the most important words from the articles, but sometimes failed
-to combine them into reasonable sentences because it’s still difficult for GAN to generate long
+to combine them into reasonable sentences because itâ€™s still difficult for GAN to generate long
 sequence. In addition, since the reconstructor
 only evaluated the reconstruction loss of whole sequence, as the generated sequence became long,
 the reconstruction reward for generator became
