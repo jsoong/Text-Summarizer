@@ -1,0 +1,249 @@
+Abstract
+Auto-encoders compress input data into a
+latent-space representation and reconstruct the
+original data from the representation. This latent representation is not easily interpreted by
+humans. In this paper, we propose training
+an auto-encoder that encodes input text into
+human-readable sentences, and unpaired abstractive summarization is thereby achieved.
+The auto-encoder is composed of a generator
+and a reconstructor. The generator encodes the
+input text into a shorter word sequence, and
+the reconstructor recovers the generator input
+from the generator output. To make the generator output human-readable, a discriminator
+restricts the output of the generator to resemble human-written sentences. By taking the
+generator output as the summary of the input text, abstractive summarization is achieved
+without document-summary pairs as training
+data. Promising results are shown on both English and Chinese corpora.
+1 Introduction
+When it comes to learning data representations,
+a popular approach involves the auto-encoder architecture, which compresses the data into a latent representation without supervision. In this
+paper we focus on learning text representations.
+Because text is a sequence of words, to encode a
+sequence, a sequence-to-sequence (seq2seq) autoencoder (Li et al., 2015; Kiros et al., 2015) is usually used, in which a RNN is used to encode the
+input sequence into a fixed-length representation,
+after which another RNN is used to decode the
+original input sequence given this representation.
+Although the latent representation learned by
+the seq2seq auto-encoder can be used in downstream applications, it is usually not humanreadable. A human-readable representation should
+comply the rule of human grammar and can be
+comprehended by human. Therefore, in this work,
+we use comprehensible natural language as a latent representation of the input source text in an
+auto-encoder architecture. This human-readable
+latent representation is shorter than the source text;
+in order to reconstruct the source text, it must reflect the core idea of the source text. Intuitively,
+the latent representation can be considered a summary of the text, so unpaired abstractive summarization is thereby achieved.
+The idea that using human comprehensible language as a latent representation has been explored on text summarization, but only in a semisupervised scenario. Previous work (Miao and
+Blunsom, 2016) uses a prior distribution from a
+pre-trained language model to constrain the generated sequence to natural language. However,
+to teach the compressor network to generate text
+summaries, the model is trained using labeled
+data. In contrast, in this work we need no labeled
+data to learn the representation.
+As shown in Fig. 1, the proposed model is composed of three components: a generator, a discriminator, and a reconstructor. Together, the generator
+and reconstructor form a text auto-encoder. The
+generator acts as an encoder in generating the latent representation from the input text. Instead of
+using a vector as latent representation, however,
+the generator generates a word sequence much
+shorter than the input text. From the shorter text,
+the reconstructor reconstructs the original input
+of the generator. By minimizing the reconstruction loss, the generator learns to generate short
+text segments that contain the main information in
+the original input. We use the seq2seq model in
+modeling the generator and reconstructor because
+both have input and output sequences with different lengths.
+However, it is very possible that the generator’s output word sequence can only be processed and recognized by the reconstructor but is
+arXiv:1810.02851v1 [cs.CL] 5 Oct 2018
+not readable by humans. Here, instead of regularizing the generator output with a pre-trained
+language model (Miao and Blunsom, 2016), we
+borrow from adversarial auto-encoders (Makhzani
+et al., 2015) and cycle GAN (Zhu et al., 2017)
+and introduce a third component – the discriminator – to regularize the generator’s output word sequence. The discriminator and the generator form
+a generative adversarial network (GAN) (Goodfellow et al., 2014). The discriminator discriminates between the generator output and humanwritten sentences, and the generator produces output as similar as possible to human-written sentences to confuse the discriminator. With the GAN
+framework, the discriminator teaches the generator how to create human-like summary sentences
+as a latent representation. However, due to the
+non-differential property of discrete distributions,
+generating discrete distributions by GAN is challenging. To tackle this problem, in this work, we
+proposed a new kind of method on language generation by GAN.
+By achieving unpaired abstractive text summarization, machine is able to unsupervisedly extract
+the core idea of the documents. This approach
+has many potential applications. For example, the
+output of the generator can be used for the downstream tasks like document classification and sentiment classification. In this study, we evaluate the
+results on an abstractive text summarization task.
+The output word sequence of the generator is regarded as the summaries of the input text. The
+model is learned from a set of documents without summaries. As most documents are not paired
+with summaries, for example the movie reviews or
+lecture recordings, this technique makes it possible to learn summarizer to generate summaries for
+these documents. The results show that the generator generates summaries with reasonable quality
+on both English and Chinese corpora.
+2 Related Work
+Abstractive Text Summarization
+Recent model architectures for abstractive text
+summarization basically use the sequence-tosequence (Sutskever et al., 2014) framework in
+combination with various novel mechanisms. One
+popular mechanism is attention (Bahdanau et al.,
+2015), which has been shown helpful for summarization (Nallapati et al., 2016; Rush et al., 2015;
+Chopra et al., 2016). It is also possible to directly
+optimize evaluation metrics such as ROUGE (Lin,
+Figure 1: Proposed model. Given long text, the
+generator produces a shorter text as a summary.
+The generator is learned by minimizing the reconstruction loss together with the reconstructor and
+making discriminator regard its output as humanwritten text.
+2004) with reinforcement learning (Ranzato et al.,
+2016; Paulus et al., 2017; Bahdanau et al., 2016).
+The hybrid pointer-generator network (See et al.,
+2017) selects words from the original text with a
+pointer (Vinyals et al., 2015) or from the whole
+vocabulary with a trained weight. In order to eliminate repetition, a coverage vector (Tu et al., 2016)
+can be used to keep track of attended words, and
+coverage loss (See et al., 2017) can be used to
+encourage model focus on diverse words. While
+most papers focus on supervised learning with
+novel mechanisms, in this paper, we explore unsupervised training models.
+GAN for Language Generation
+In this paper, we borrow the idea of GAN to make
+the generator output human-readable. The major
+challenge in applying GAN to sentence generation is the discrete nature of natural language. To
+generate a word sequence, the generator usually
+has non-differential parts such as argmax or other
+sample functions which cause the original GAN to
+fail.
+In (Gulrajani et al., 2017), instead of feeding a
+discrete word sequence, the authors directly feed
+the generator output layer to the discriminator.
+This method works because they use the earth
+mover’s distance on GAN as proposed in (Arjovsky et al., 2017), which is able to evaluate the
+distance between a discrete and a continuous distribution. SeqGAN (Yu et al., 2017) tackles the
+sequence generation problem with reinforcement
+learning. Here, we refer to this approach as adversarial REINFORCE. However, the discriminator only measures the quality of whole sequence,
+and thus the rewards are extremely sparse and the
+rewards assigned to all the generation steps are all
+the same. MC search (Yu et al., 2017) is proposed
+to evaluate the approximate reward at each time
+step, but this method suffers from high time complexity. Following this idea, (Li et al., 2017) proposes partial evaluation approach to evaluate the
+expected reward at each time step. In this paper, we propose the self-critical adversarial REINFORCE algorithm as another way to evaluate
+the expected reward at each time step. The performance between original WGAN and proposed
+adversarial REINFORCE is compared in experiment.
+3 Proposed Method
+The overview of the proposed model is shown in
+Fig. 2. The model is composed of three components: generator G, discriminator D, and reconstructor R. Both G and R are seq2seq hybrid pointer-generator networks (See et al., 2017)
+which can decide to copy words from encoder input text via pointing or generate from vocabulary.
+They both take a word sequence as input and output a sequence of word distributions. Discriminator D, on the other hand, takes a sequence as input
+and outputs a scalar. The model is learned from a
+set of documents x and human-written sentences.
+Architecture of proposed model. The generator network and reconstructor network are a
+seq2seq hybrid pointer-generator network, but for simplicity, we omit the pointer and the attention parts.
+loss varies widely from sample to sample, and thus
+the rewards to the generator are not stable either.
+Hence we add a baseline to reduce their difference.
+With adversarial training, the generator learns to
+produce sentences as similar to the human-written
+sentences as possible. Here, we conduct experiments on two kinds of methods of language generation with GAN. In Section 5.1 we directly
+feed the generator output probability distributions
+to the discriminator and use a Wasserstein GAN
+(WGAN) with a gradient penalty. In Section 5.2,
+we explore adversarial REINFORCE, which feeds
+sampled discrete word sequences to the discriminator and evaluates the quality of the sequence.
+Experiment
+Our model was evaluated on the English/Chinese
+Gigaword datasets and CNN/Daily Mail dataset.
+In Section 6.1,6.2 and 6.4, the experiments were
+conducted on English Gigaword, while the experiments were conducted on CNN/Daily Mail dataset
+and Chinese Gigaword dataset respectively in Sections 6.3 and 6.6. We used ROUGE(Lin, 2004) as
+our evaluation metric.3 During testing, when using the generator to generate summaries, we used
+beam search with beam size=5, and we eliminated
+repetition. We provide the details of the implementation and corpus re-processing respectively
+in Appendix A and B.
+Before jointly training the whole model, we
+pre-trained the three major components – generator, discriminator, and reconstructor – separately.
+First, we pre-trained the generator in an unsupervised manner so that the generator would be able
+to somewhat grasp the semantic meaning of the
+source text. The details of the pre-training are
+in Appendix C. We pre-trained the discriminator
+and reconstructor respectively with the pre-trained
+generator’s output to ensure that these two critic
+networks provide good feedback to the generator.
+The English Gigaword is a sentence summarization dataset which contains the first sentence of
+each article and its corresponding headlines. The
+preprocessed corpus contains 3.8M training pairs
+and 400K validation pairs. We trained our model
+on part of or fully unparalleled data on 3.8M training set. To have fair comparison with previous
+works, the following experiments were evaluated
+on the 2K testing set same as (Rush et al., 2015;
+Miao and Blunsom, 2016). We used the sentences
+in article headlines as real data for discriminator4
+.
+As shown in the following experiments, the headlines can even come from another set of documents not related to the training documents.
+The results on English Gigaword are shown in
+Table 1. WGAN and adversarial REINFORCE
+refer to the adversarial training methods mentioned in Sections 5.1 and 5.2 respectively. Results trained by full labeled data are in part (A).
+In row (A-1), We trained our generator by su4
+Instead of using general sentences as real data for discriminator, we chose sentences from headlines because they
+have their own unique distribution.
+pervised training. Compared with the previous
+work (Zhou et al., 2017), we used simpler model
+and smaller vocabulary size. We did not try to
+achieve the state-of-the-art results because the focus of this work is unsupervised learning, and the
+proposed approach is independent to the summarization models used. In row (B-1), we simply
+took the first eight words in a document as its summary.
+The results for the pre-trained generator with
+method mentioned in Appendix.C is shown in row
+(C-1). In part (C), we directly took the sentences
+in the summaries of Gigaword as the training data
+of discriminator. Compared with the pre-trained
+generator and the trivial baseline , the proposed
+approach (rows (C-2) and (C-3)) showed good improvement. In Fig. 4, we provide a real example.
+More examples can be found in the Appendix.D.
+6.2 Semi-Supervised Learning
+In semi-supervised training, generator was pretrained with few available labeled data. During
+training, we conducted teacher-forcing with labeled data on generator after several updates without labeled data. With 10K, 500K and 1M la-
+beled data, the teacher-forcing was conducted every 25, 5 and 3 updates without paired data, respectively. In teacher-forcing, given source text
+as input, the generator was teacher-forced to predict the human-written summary of source text.
+Teacher-forcing can be regarded as regularization
+of unpaired training that prevents generator from
+producing unreasonable summaries of source text.
+We found that if we teacher-forced generator too
+frequently, generator would overfit on training
+data since we only used very few labeled data on
+semi-supervised training.
+The performance of semi-supervised model in
+English Gigaword regarding available labeled data
+is shown in Table 1 part (D). We compared our
+results with (Miao and Blunsom, 2016) which
+was the previous state-of-the-art method on semisupervised summarization task under the same
+amount of labeled data. With both 500K and 1M
+labeled data, our method performed better. Furthermore, with only 1M labeled data, using adversarial REINFORCE even outperformed supervised training in Table 1 (A-1) with the whole
+3.8M labeled data.
+Figure 4: Real examples with methods referred in
+Table 1. The proposed methods generated summaries that grasped the core idea of the articles.
+6.3 CNN/Daily Mail dataset
+The CNN/Daily Mail dataset is a long text summarization dataset which is composed of news articles paired with summaries. We evaluated our
+model on this dataset because it’s a popular benchmark dataset, and we want to know whether the
+proposed model works on long input and long
+output sequences. The details of corpus preprocessing can be found in Appendix.B . In unpaired training, to prevent the model from directly
+matching the input articles to its corresponding
+summaries, we split the training pairs into two
+equal sets, one set only supplied articles and the
+other set only supplied summaries.
+The results are shown in Table 2. For supervised approaches in part (A), although our seq2seq
+model was similar to (See et al., 2017), due to
+the smaller vocabulary size (we didn’t tackle outof-vocabulary words), simpler model architecture,
+shorter output length of generated summaries,
+there was a performance gap between our model
+and the scores reported in (See et al., 2017). Compared to the lead-3 baseline in part (B) which took
+the first three sentences of articles as summaries,
+the seq2seq models fell behind. That was because news writers often put the most important
+information in the first few sentences, and thus
+even the best abstractive summarization model
+only slightly beat the lead-3 baseline on ROUGE
+scores. However, during pre-training or training
+we didn’t make assumption that the most important sentences are in first few sentences.
+We observed that our unpaired model yielded
+decent ROUGE-1 score, but it yielded lower
+ROUGE-2 and ROUGE-L score. That was probably because the length of our generated sequence
+was shorter than ground truth, and our vocabulary size was small. Another reason was that the
+generator was good at selecting the most important words from the articles, but sometimes failed
+to combine them into reasonable sentences because it’s still difficult for GAN to generate long
+sequence. In addition, since the reconstructor
+only evaluated the reconstruction loss of whole sequence, as the generated sequence became long,
+the reconstruction reward for generator became
+extremely sparse. 
