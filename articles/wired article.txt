@@ -1,0 +1,34 @@
+THIS STARTUP IS CHALLENGING GOOGLE MAPS—AND IT NEEDS YOU
+
+StreetCred's MapNYC program is an effort to find out what might motivate map enthusiasts, crypto-lovers, maybe even people who hadn’t the faintest about either, to feed it data.MUIRIS WOULFE/GETTY IMAGES
+A WHOLE LIFETIME in New York City, and Christiana Ting didn’t realize just how many urgent care facilities there were until the app told her to start looking for them. “They were giving extra points for medical offices, and I found them, I think, on every block,” she says. “I’m not sure what that says about the neighborhood where I work.”
+
+Ting was one of 761 New Yorkers who downloaded, played with, and occasionally became obsessed with an app called MapNYC this fall, vying for their share of an 8-bitcoin prize (worth about $50,000 at the time). The month-long contest, run by a new mapping startup called StreetCred, was really an experiment. StreetCred’s main research question: How do you convince regular people to build and verify mapping data?
+
+It turns out that the maps that guide you to the nearest Arby’s, or help your Lyft driver find your house, don’t just materialize. “I took mapping for granted until I started the competition,” Ting says, even though she pulls up Google Maps at least twice a day. “But it’s such an inconvenience if the info on the map is wrong, especially in a place like New York, that’s changing all the time.”
+
+For regular folk, detailed, reliable mapping info is helpful. For businesses, it can be crucial. Some want to be found when a map user searches for the nearest sandwich shop. Others use products that rely on base maps—think Uber, the Weather Channel, your car’s navigation system—and require up-to-date location data. “One of the huge challenges to any geographic database is its currency,” says Renee Sieber, a geographer who studies participatory mapping at McGill University. That is to say, yesterday’s map is no good to anybody doing business today.
+
+
+Validated and unvalidated data points in Queens, New York, a few weeks before the conclusion of the MapNYC contest. StreetCred CEO Randy Meech says he suspects Uber and Lyft drivers were adding this data as they picked up, dropped off, and waited for fares near John F. Kennedy International Airport. STREETVIEW
+StreetCred sees that as an opportunity. “There’s a lot of companies, none of whom I can name, who have location data, and that data needs improvement,” says Randy Meech, CEO of the small startup. (Meech’s last open-source mapping company, a Samsung subsidiary called Mapzen, shut down in January.) Maybe a client found a data set online or purchased one from another company. Either way, it’s static, and that means it’s only a matter of time before it fails to represent reality.
+
+Google Maps, the giant in this space, has created its extensive database through years of web scraping, Streetview roaming, purchasing and collecting satellite data, and both paying and asking volunteers to verify that the businesses it identifies are still in the same place. But the company doesn’t provide all of its specific location or “point of interest” data to developers—where that Thai restaurant is, or where the hiking trail starts, or where the hospital parking lot is located. When it and other mapping services like HERE Technologies, TomTom, and Foursquare do offer that intel, it can be pricey. StreetCred wants to make that info free for customers who don’t need that much data and cheaper for those that do.
+
+And more accurate, too, with serious assists from cryptocurrency-seeking mappers. Other companies rely on OpenStreetMap, a crowdsourced, open-source effort to create a complete and editable map of the world. (Think Wikipedia for maps.) OSM’s 1 million contributors are constantly adding to and updating its maps using GPS devices, aerial imagery, and info they enter manually.
+
+But open-source cartography isn’t always comprehensive or particular enough for the users Meech is targeting. If a company making a VR game for kids needs to know the location of every playground in Cincinnati, there’s no guarantee the volunteers will plug that in. So StreetCred might offer a future mapping army an extra crypto incentive to find, validate, and label those locations.
+
+It’s a fun idea, but not easy to pull off. “What StreetCred is trying to solve is really a very hard problem,” says Martijn van Exel, who has been an OpenStreetMap contributor since 2007 and served for years on its board of directors. “Point of interest data requires a very focused effort. It requires a lot of eyes on the ground and people actually observing changes in the field.”
+
+Which is why Meech says he came up with MapNYC: an effort to find out what might motivate map enthusiasts, crypto-lovers, maybe even people who hadn’t the faintest about either, to feed it data. The company says it will contribute that info back to OpenStreetMaps under a licensing agreement designed to make it easier for people and companies to share and collaborate when working with data.
+
+StreetCred’s contest approach is not uncontentious. “Gamification in the OpenStreetMap community has always been highly controversial, because if you’re doing it for money, then when the money goes away, you’re not going to do it anymore, and maybe you’re not doing it for the right reasons,” says Sieber.
+
+The purists and longtime mappers may not love profit-driven cartography, but StreetCred isn’t the only outfit that monetizes open-source map info. Companies like Mapbox, Mapillary, Esri, Telenav, and DigitalGlobe also refine and create visual tools for clients willing to provide or pay for mapping data.
+
+Before StreetCred can worry about the philosophical questions, though, it has to prove that its idea works. It plans to run more MapNYC-like experiments in other places, including the Consumer Electronics Show in Las Vegas next month. It plans to create its own cryptocurrency. And it’s still reviewing lessons learned in New York: The company says the MapNYC project generated over 20,000 places in four weeks, some validated by three users.
+
+Of the StreetCred mappers, Ting was ranked the 25th most prolific. The number one spot went to a hedge fund product manager named Max Koenig, who mapped over 200 points of interest per day. “My weekend was completely monopolized by this,” Koenig says. He’d get up at 8 in the morning and leave his Manhattan home to spend all day charting the outer boroughs, where MapNYC gave bigger bonuses.
+
+StreetCred will need people like Koenig and Ting going forward. And it will have to prove that incentives can keep the map of the world fresh, detailed—and worth paying for.
